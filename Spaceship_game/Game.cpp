@@ -126,7 +126,7 @@ void Game::normalLevelUpdate()
 
 	this->managePowerups();
 	m_text.manageLifetime(m_ship.powerupActivated());
-	m_text.update(m_ship.getPoints(), m_ship.getPowerupTimer());
+	m_text.update(m_ship.getPoints(), m_ship.getPowerupTimer(), m_ship.getPowerupType());
 }
 
 void Game::bossFightUpdate()
@@ -139,7 +139,7 @@ void Game::bossFightUpdate()
 	m_enemy.updateBullets();
 
 	m_text.manageLifetime(m_ship.powerupActivated());
-	m_text.update(m_ship.getPoints(), m_ship.getPowerupTimer());
+	m_text.update(m_ship.getPoints(), m_ship.getPowerupTimer(), m_ship.getPowerupType());
 
 	if (!m_enemy.isAlive()) {
 

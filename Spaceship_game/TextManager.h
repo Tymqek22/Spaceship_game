@@ -16,8 +16,8 @@ public:
 	~TextManager();
 
 	void manageLifetime(bool shipPowerupActive);
-
+	std::string getPowerupType(const PowerupType& powerup);
 	
-	void update(int score, float time);
+	void update(int score, float time, const PowerupType& powerup);
 	void renderAll(sf::RenderTarget* target);
 };

@@ -32,7 +32,27 @@ void TextManager::manageLifetime(bool shipPowerupActive)
 	}
 }
 
-void TextManager::update(int score, float time)
+std::string TextManager::getPowerupType(const PowerupType& powerup)
+{
+	std::string powerupName;
+
+	switch (powerup) {
+
+	case PowerupType::reloadTime: 
+		powerupName = "Quick shoot";
+		break;
+	case PowerupType::shield:
+		powerupName = "Shield";
+		break;
+	case PowerupType::multishoot:
+		powerupName = "Multishoot";
+		break;
+	}
+
+	return powerupName;
+}
+
+void TextManager::update(int score, float time, const PowerupType& powerup)
 {
 	for (auto& message : m_messages) {
 
@@ -44,7 +64,7 @@ void TextManager::update(int score, float time)
 				message->update<int>("Score", score);
 				break;
 			case MessageType::powerupTimer:
-				message->update<float>("Powerup", time);
+				message->update<float>(this->getPowerupType(powerup), time);
 				break;
 			}
 		}

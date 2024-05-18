@@ -1,4 +1,5 @@
 #pragma once
+#include "Powerup.h"
 #include <SFML/Graphics.hpp>
 #include <iomanip>
 #include <string>
