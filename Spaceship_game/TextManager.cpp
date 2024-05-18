@@ -3,44 +3,62 @@
 #include <sstream>
 #include <iomanip>
 
-void TextManager::createText()
+TextManager::TextManager()
 {
-	m_font.loadFromFile("Font/Retro_Gaming.ttf");
+	TextMessage* score = new TextMessage("Score: 0", sf::Vector2f(10.f, 10.f), MessageType::score, true);
+	TextMessage* powerupInfo = new TextMessage(" ", sf::Vector2f(10.f, 40.f), MessageType::powerupTimer, false);
 
-	m_score.setFont(m_font);
-	m_powerupCountdown.setFont(m_font);
-
-	m_score.setString("Score: 0");
-	m_score.setFillColor(sf::Color::White);
-	m_score.setPosition(10.f, 10.f);
-
-	m_powerupCountdown.setFillColor(sf::Color::White);
-	m_powerupCountdown.setPosition(10.f, 40.f);
+	m_messages.push_back(score);
+	m_messages.push_back(powerupInfo);
 }
 
-void TextManager::updateText(int points)
+TextManager::~TextManager()
 {
-	std::stringstream ss;
-	ss << "Score: " << points;
+	for (auto& message : m_messages) {
 
-	m_score.setString(ss.str());
+		delete message;
+	}
 }
 
-void TextManager::updatePowerupText(float time)
+void TextManager::manageLifetime(bool shipPowerupActive)
 {
-	std::stringstream ss;
+	if (shipPowerupActive) {
 
-	ss << "Powerup: " <<std::fixed << std::setprecision(2) << time;
+		m_messages[1]->activate();
+	}
+	else {
 
-	m_powerupCountdown.setString(ss.str());
+		m_messages[1]->deactivate();
+	}
 }
 
-void TextManager::renderText(sf::RenderTarget* target)
+void TextManager::update(int score, float time)
 {
-	target->draw(m_score);
+	for (auto& message : m_messages) {
+
+		if (message->isAlive()) {
+
+			switch (message->getType()) {
+
+			case MessageType::score:
+				message->update<int>("Score", score);
+				break;
+			case MessageType::powerupTimer:
+				message->update<float>("Powerup", time);
+				break;
+			}
+		}
+	}
 }
 
-void TextManager::renderPowerupText(sf::RenderTarget* target)
+void TextManager::renderAll(sf::RenderTarget* target)
 {
-	target->draw(m_powerupCountdown);
+	for (auto& message : m_messages) {
+
+		if (message->isAlive()) {
+
+			message->render(target);
+		}
+		
+	}
 }

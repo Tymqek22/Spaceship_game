@@ -14,7 +14,6 @@ Game::Game() : m_asteroidBooster{0.f}
 	m_window->setFramerateLimit(60);
 
 	this->createAsteroids();
-	m_text.createText();
 	m_enemy.setPlayerAsEnemy(&m_ship);
 }
 
@@ -87,7 +86,7 @@ void Game::managePowerups()
 
 void Game::update()
 {
-	if (m_ship.getPoints() != 5) {
+	if (m_ship.getPoints() != 15) {
 
 		this->normalLevelUpdate();
 	}
@@ -99,7 +98,7 @@ void Game::update()
 
 void Game::render()
 {
-	if (m_ship.getPoints() != 5) {
+	if (m_ship.getPoints() != 15) {
 
 		this->normalLevelRender();
 	}
@@ -126,10 +125,8 @@ void Game::normalLevelUpdate()
 	manager.manageAsteroids(m_asteroids, m_ship);
 
 	this->managePowerups();
-	m_text.updateText(m_ship.getPoints());
-	if (m_ship.powerupActivated()) {
-		m_text.updatePowerupText(m_ship.getPowerupTimer());
-	}
+	m_text.manageLifetime(m_ship.powerupActivated());
+	m_text.update(m_ship.getPoints(), m_ship.getPowerupTimer());
 }
 
 void Game::bossFightUpdate()
@@ -141,7 +138,8 @@ void Game::bossFightUpdate()
 	m_enemy.updateShip();
 	m_enemy.updateBullets();
 
-	m_text.updateText(m_ship.getPoints());
+	m_text.manageLifetime(m_ship.powerupActivated());
+	m_text.update(m_ship.getPoints(), m_ship.getPowerupTimer());
 
 	if (!m_enemy.isAlive()) {
 
@@ -153,11 +151,6 @@ void Game::normalLevelRender()
 {
 	m_window->clear(sf::Color::Black);
 
-	m_text.renderText(m_window);
-	if (m_ship.powerupActivated()) {
-		m_text.renderPowerupText(m_window);
-	}
-
 	m_ship.renderShip(m_window);
 	m_ship.renderBullets(m_window);
 
@@ -166,6 +159,8 @@ void Game::normalLevelRender()
 
 	PowerupManager powerManager;
 	powerManager.renderPowerups(m_powerups, m_window);
+
+	m_text.renderAll(m_window);
 
 	m_window->display();
 }
@@ -180,7 +175,7 @@ void Game::bossFightRender()
 	m_enemy.renderShip(m_window);
 	m_enemy.renderBullets(m_window);
 
-	m_text.renderText(m_window);
+	m_text.renderAll(m_window);
 
 	m_window->display();
 }

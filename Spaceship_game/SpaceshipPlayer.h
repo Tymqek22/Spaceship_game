@@ -29,8 +29,9 @@ public:
 
 	sf::Vector2f getLeftWeaponPosition() const;
 	sf::Vector2f getRightWeaponPosition() const;
-	int getPoints() const;
+	int getPoints();
 	float getPowerupTimer() const;
+	PowerupType getPowerupType() const;
 
 	bool powerupActivated() const;
 	bool isAlive() const;

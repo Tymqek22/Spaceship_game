@@ -1,25 +1,23 @@
 #pragma once
 
+#include "SpaceshipPlayer.h"
+#include "TextMessage.h"
+
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
+
 
 class TextManager
 {
 private:
-	sf::Font m_font;
-	sf::Text m_score;
-	sf::Text m_powerupCountdown;
+	std::vector<TextMessage*> m_messages;
 
 public:
-	TextManager() = default;
+	TextManager();
+	~TextManager();
 
-	void createText();
-	void updateText(int points);
-	void updatePowerupText(float time);
-	void renderText(sf::RenderTarget* target);
-	void renderPowerupText(sf::RenderTarget* target);
+	void manageLifetime(bool shipPowerupActive);
+
+	
+	void update(int score, float time);
+	void renderAll(sf::RenderTarget* target);
 };
-

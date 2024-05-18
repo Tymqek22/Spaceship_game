@@ -59,7 +59,7 @@ sf::Vector2f SpaceshipPlayer::getRightWeaponPosition() const
 	return sf::Vector2f(rightPosition, bottomPosition);
 }
 
-int SpaceshipPlayer::getPoints() const
+int SpaceshipPlayer::getPoints()
 {
 	return m_points;
 }
@@ -69,6 +69,11 @@ float SpaceshipPlayer::getPowerupTimer() const
 	sf::Time time = sf::seconds(4.f) - m_powerupTimer.getElapsedTime();
 
 	return time.asSeconds();
+}
+
+PowerupType SpaceshipPlayer::getPowerupType() const
+{
+	return m_currentPowerup;
 }
 
 bool SpaceshipPlayer::powerupActivated() const
