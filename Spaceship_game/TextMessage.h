@@ -14,12 +14,15 @@ private:
 	sf::Text m_message;
 	std::string m_content;
 	sf::Vector2f m_position;
+	unsigned int m_size;
 	MessageType m_messageType;
+	float m_scale;
 	bool m_alive;
 	
 
 public:
-	TextMessage(const std::string& content, const sf::Vector2f& position, const MessageType& type, bool alive);
+	TextMessage(const std::string& content, const sf::Vector2f& position, unsigned int size, const MessageType& type, 
+		bool alive);
 
 	MessageType getType() const;
 	bool isAlive() const;
@@ -46,9 +49,21 @@ void TextMessage::update(const std::string& message, T number)
 	}
 	case MessageType::powerupTimer: {
 
+		m_scale -= 0.002f;
 		std::stringstream ss;
 		ss << message << ": " << std::fixed << std::setprecision(2) << number;
+		if (message == "Quick shoot") {
+			m_message.setFillColor(sf::Color::Red);
+		}
+		else if (message == "Shield") {
+			m_message.setFillColor(sf::Color::Blue);
+		}
+		else if (message == "Multishoot") {
+			m_message.setFillColor(sf::Color::White);
+		}
+
 		m_message.setString(ss.str());
+		m_message.setScale(m_scale, m_scale);
 		break;
 	}
 	}

@@ -5,8 +5,8 @@
 
 TextManager::TextManager()
 {
-	TextMessage* score = new TextMessage("Score: 0", sf::Vector2f(10.f, 10.f), MessageType::score, true);
-	TextMessage* powerupInfo = new TextMessage(" ", sf::Vector2f(10.f, 40.f), MessageType::powerupTimer, false);
+	TextMessage* score = new TextMessage("Score: 0", sf::Vector2f(10.f, 10.f), 30, MessageType::score, true);
+	TextMessage* powerupInfo = new TextMessage(" ", sf::Vector2f(10.f, 40.f), 50, MessageType::powerupTimer, false);
 
 	m_messages.push_back(score);
 	m_messages.push_back(powerupInfo);
