@@ -9,6 +9,11 @@ int main()
 {
     Game game;
 
+    //starting screen
+    while (!game.gameStarted() && game.isRunning()) {
+        game.startScreen();
+    }
+
     //game loop
     while (game.isRunning()) {
 

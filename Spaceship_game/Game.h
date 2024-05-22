@@ -19,6 +19,8 @@ private:
 	TextManager m_text;
 	sf::Clock m_powerupTimer;
 	float m_asteroidBooster;
+	bool m_gameStarted;
+	bool m_gameFinished;
 
 	SpaceshipPlayer m_ship;
 	SpaceshipEnemy m_enemy;
@@ -32,10 +34,12 @@ public:
 	~Game();
 
 	bool isRunning() const;
+	bool gameStarted();
 
 	void pollEvents();
 	void managePowerups();
 
+	void startScreen();
 	void update();
 	void render();
 	void bossFightUpdate();

@@ -8,7 +8,7 @@
 #include "PowerupShield.h"
 #include "PowerupMultishoot.h"
 
-Game::Game() : m_asteroidBooster{0.f}
+Game::Game() : m_asteroidBooster{0.f}, m_gameStarted{ false }, m_gameFinished{ false }
 {
 	m_window = new sf::RenderWindow(sf::VideoMode(1000, 800), "Spaceship Game", sf::Style::Default);
 	m_window->setFramerateLimit(60);
@@ -49,7 +49,17 @@ void Game::createAsteroids()
 
 bool Game::isRunning() const
 {
-	return m_window->isOpen() && m_ship.isAlive();
+	return (m_window->isOpen() && m_ship.isAlive()) && !m_gameFinished;
+}
+
+bool Game::gameStarted()
+{
+	if (m_gameStarted) {
+		m_powerupTimer.restart();
+		return true;
+	}
+	
+	return false;
 }
 
 void Game::pollEvents()
@@ -58,12 +68,18 @@ void Game::pollEvents()
 
 		switch (m_ev.type) {
 		case sf::Event::Closed:
+			m_gameFinished = true;
 			m_window->close();
 			break;
 
 		case sf::Event::KeyPressed: {
 			if (m_ev.key.code == sf::Keyboard::Escape) {
+				m_gameFinished = true;
 				m_window->close();
+				break;
+			}
+			else if (m_ev.key.code == sf::Keyboard::Enter) {
+				m_gameStarted = true;
 				break;
 			}
 		}
@@ -82,6 +98,35 @@ void Game::managePowerups()
 
 	manager.manageLifetime(m_powerups);
 	manager.updatePowerups(m_powerups, &m_ship);
+}
+
+void Game::startScreen()
+{
+	sf::Font font;
+	font.loadFromFile("Font/Retro_Gaming.ttf");
+	sf::Text title("Space Shooting", font, 60);
+	sf::Text text("Press [Enter] to start", font, 30);
+	sf::Text userManual("Left - [Left arrow]\nRight - [Right arrow]\nShoot - [Space]\nExit - [Esc]", font, 17);
+	sf::Text credits("Created by Tymoteusz Procner", font, 15);
+
+	title.setPosition(220.f, 50.f);
+	title.setFillColor(sf::Color::Yellow);
+	text.setPosition(280.f, 200.f);
+	text.setFillColor(sf::Color::White);
+	userManual.setPosition(5.f, 680.f);
+	userManual.setFillColor(sf::Color::White);
+	credits.setPosition(660.f, 750.f);
+	credits.setFillColor(sf::Color::White);
+	this->pollEvents();
+
+	m_window->clear(sf::Color::Black);
+	m_window->draw(title);
+	m_window->draw(text);
+	m_window->draw(userManual);
+	m_window->draw(credits);
+	m_ship.renderShip(m_window);
+
+	m_window->display();
 }
 
 void Game::update()
