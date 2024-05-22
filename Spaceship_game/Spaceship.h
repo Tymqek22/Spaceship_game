@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Bullet.h"
+#include "HealthBar.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -13,9 +14,10 @@ class Spaceship
 {
 protected:
 	float SHIP_SPEED = 8.f;
-
+	float m_healthPoints;
 	sf::Texture m_texture;
 	sf::Sprite m_entity;
+	HealthBar m_healthBar;
 	std::vector<Bullet> m_bulletsShot;
 	sf::Clock m_clock;
 
@@ -27,6 +29,7 @@ public:
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;
 	sf::FloatRect getAreaToCheck() const;
+	float getHealth() const;
 
 	virtual void shoot() = 0;
 	virtual void hit() = 0;

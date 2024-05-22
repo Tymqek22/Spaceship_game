@@ -11,9 +11,12 @@ SpaceshipPlayer::SpaceshipPlayer()
 		std::cerr << "Error with opening a file.";
 	}
 
+	m_healthPoints = 50;
 	m_entity.setTexture(m_texture);
 	m_entity.setScale(0.3f, 0.3f);
-	m_entity.setPosition(480.f, 690.f);
+	m_entity.setPosition(480.f, 670.f);
+	m_healthBar.setXPosition(this->getWeaponPosition());
+	m_healthBar.setYPosition(780.f);
 }		
 
 SpaceshipPlayer::~SpaceshipPlayer() {}
@@ -113,7 +116,11 @@ void SpaceshipPlayer::shoot()
 
 void SpaceshipPlayer::hit()
 {
-	m_alive = false;
+	m_healthPoints -= 10;
+
+	if (m_healthPoints == 0) {
+		m_alive = false;
+	}
 	std::cout << "Player was hit!\n";
 }
 
@@ -147,12 +154,14 @@ void SpaceshipPlayer::updateShip()
 
 		if (m_entity.getGlobalBounds().left > 0.f) {
 			m_entity.move(-SHIP_SPEED, 0.f);
+			m_healthBar.update(sf::Vector2f(-SHIP_SPEED, 0.f), this->getHealth());
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 
 		if (m_entity.getGlobalBounds().width + m_entity.getGlobalBounds().left < 1000.f) {
 			m_entity.move(SHIP_SPEED, 0.f);
+			m_healthBar.update(sf::Vector2f(SHIP_SPEED, 0.f), this->getHealth());
 		}
 		
 	}
@@ -172,6 +181,8 @@ void SpaceshipPlayer::updateShip()
 
 		this->controlPowerup();
 	}
+
+	m_healthBar.updateLenght(this->getHealth(), 50.f);
 }
 
 void SpaceshipPlayer::updateBullets(std::vector<Asteroid*>& asteroids)

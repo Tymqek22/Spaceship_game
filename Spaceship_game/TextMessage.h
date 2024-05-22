@@ -52,6 +52,7 @@ void TextMessage::update(const std::string& message, T number)
 		m_scale -= 0.002f;
 		std::stringstream ss;
 		ss << message << ": " << std::fixed << std::setprecision(2) << number;
+
 		if (message == "Quick shoot") {
 			m_message.setFillColor(sf::Color::Red);
 		}

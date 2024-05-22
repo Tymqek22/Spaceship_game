@@ -4,7 +4,6 @@
 class SpaceshipEnemy : public Spaceship
 {
 private:
-	int m_healthPoints;
 	bool m_alive;
 
 	Spaceship* m_player;

@@ -35,10 +35,15 @@ sf::FloatRect Spaceship::getAreaToCheck() const
 	return sf::FloatRect(this->getPosition(), this->getSize());
 }
 
+float Spaceship::getHealth() const
+{
+	return m_healthPoints;
+}
+
 void Spaceship::renderShip(sf::RenderTarget* target)
 {
 	target->draw(m_entity);
-
+	m_healthBar.render(target);
 }
 
 void Spaceship::renderBullets(sf::RenderTarget* target)

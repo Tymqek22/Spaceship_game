@@ -3,16 +3,18 @@
 
 #include <iostream>
 
-SpaceshipEnemy::SpaceshipEnemy() : m_healthPoints{50}, m_alive{true}, m_player{nullptr}
+SpaceshipEnemy::SpaceshipEnemy() : m_alive{true}, m_player{nullptr}
 {
 	if (!m_texture.loadFromFile("Textures/Enemy.png")) {
 		std::cerr << "Error with opening a file.";
 	}
 
+	m_healthPoints = 50;
 	m_entity.setTexture(m_texture);
 	m_entity.setScale(0.1f, 0.1f);
-	m_entity.setPosition(480.f, 20.f);
-
+	m_entity.setPosition(480.f, 30.f);
+	m_healthBar.setXPosition(this->getWeaponPosition());
+	m_healthBar.setYPosition(5.f);
 }
 
 SpaceshipEnemy::~SpaceshipEnemy() {}
@@ -56,9 +58,11 @@ void SpaceshipEnemy::updateShip()
 
 	if (m_player->getWeaponPosition().x > m_entity.getGlobalBounds().left + m_entity.getGlobalBounds().width) {
 		m_entity.move(2.f, 0.f);
+		m_healthBar.update(sf::Vector2f(2.f, 0.f), this->getHealth());
 	}
 	else if (m_player->getWeaponPosition().x < m_entity.getGlobalBounds().left) {
 		m_entity.move(-2.f, 0.f);
+		m_healthBar.update(sf::Vector2f(-2.f, 0.f), this->getHealth());
 	}
 
 	if (timer.asSeconds() >= 1.f) {
@@ -66,6 +70,8 @@ void SpaceshipEnemy::updateShip()
 		this->shoot();
 		m_clock.restart();
 	}
+
+	m_healthBar.updateLenght(this->getHealth(), 50.f);
 }
 
 void SpaceshipEnemy::updateBullets()

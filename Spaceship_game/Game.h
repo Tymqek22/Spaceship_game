@@ -7,6 +7,7 @@
 #include "Asteroid.h"
 #include "TextManager.h"
 #include "Powerup.h"
+#include "HealthBar.h"
 
 //TODO: komunikaty game over, info o powerupie, press start
 
