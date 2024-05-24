@@ -1,5 +1,6 @@
 #include "SpaceshipEnemy.h"
 #include "BulletManager.h"
+#include "Globals.h"
 
 #include <iostream>
 
@@ -9,7 +10,7 @@ SpaceshipEnemy::SpaceshipEnemy() : m_alive{true}, m_player{nullptr}
 		std::cerr << "Error with opening a file.";
 	}
 
-	m_healthPoints = 50;
+	m_healthPoints = ENEMY_HEALTH;
 	m_entity.setTexture(m_texture);
 	m_entity.setScale(0.1f, 0.1f);
 	m_entity.setPosition(480.f, 30.f);
@@ -57,21 +58,21 @@ void SpaceshipEnemy::updateShip()
 	sf::Time timer = m_clock.getElapsedTime();
 
 	if (m_player->getWeaponPosition().x > m_entity.getGlobalBounds().left + m_entity.getGlobalBounds().width) {
-		m_entity.move(2.f, 0.f);
-		m_healthBar.update(sf::Vector2f(2.f, 0.f), this->getHealth());
+		m_entity.move(ENEMY_SPEED, 0.f);
+		m_healthBar.update(sf::Vector2f(ENEMY_SPEED, 0.f), this->getHealth(), ENEMY_HEALTH);
 	}
 	else if (m_player->getWeaponPosition().x < m_entity.getGlobalBounds().left) {
-		m_entity.move(-2.f, 0.f);
-		m_healthBar.update(sf::Vector2f(-2.f, 0.f), this->getHealth());
+		m_entity.move(-ENEMY_SPEED, 0.f);
+		m_healthBar.update(sf::Vector2f(-ENEMY_SPEED, 0.f), this->getHealth(), ENEMY_HEALTH);
 	}
 
-	if (timer.asSeconds() >= 1.f) {
+	if (timer.asSeconds() >= ENEMYSHOOTING_COOLDOWN) {
 
 		this->shoot();
 		m_clock.restart();
 	}
 
-	m_healthBar.updateLenght(this->getHealth(), 50.f);
+	m_healthBar.updateLenght(this->getHealth(), ENEMY_HEALTH);
 }
 
 void SpaceshipEnemy::updateBullets()

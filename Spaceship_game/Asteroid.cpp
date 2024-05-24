@@ -1,10 +1,8 @@
 #include "Asteroid.h"
+#include "Globals.h"
 
 #include <iostream>
 #include <random>
-
-
-std::mt19937 mt(std::random_device{}());
 
 Asteroid::Asteroid(const sf::Texture& texture) : m_xDirection{ 0.f }, m_yDirection{ 0.f }, m_alive{ true }, m_texture { texture }
 {
@@ -80,6 +78,7 @@ void Asteroid::setBoost(float boost)
 
 void Asteroid::setDirection()
 {
+	std::mt19937 mt(std::random_device{}());
 	std::uniform_int_distribution<int> range{ -2,2 };
 	do {
 		m_xDirection = static_cast<float>(range(mt));
@@ -89,6 +88,7 @@ void Asteroid::setDirection()
 
 void Asteroid::setPosition()
 {
+	std::mt19937 mt(std::random_device{}());
 	std::uniform_real_distribution<float> xRange{ 0.f,900.f };
 	std::uniform_real_distribution<float> yRange{ 0.f,500.f };
 
@@ -108,13 +108,13 @@ void Asteroid::bounce()
 	if (m_top <= 0.f) {
 		m_yDirection = -m_yDirection;
 	}
-	else if (m_bottom >= 800.f) {
+	else if (m_bottom >= SCREEN_HEIGHT) {
 		m_yDirection = -m_yDirection;
 	}
 	else if (m_left <= 0.f) {
 		m_xDirection = -m_xDirection;
 	}
-	else if (m_right >= 1000.f) {
+	else if (m_right >= SCREEN_WIDTH) {
 		m_xDirection = -m_xDirection;
 	}
 }
@@ -126,7 +126,7 @@ void Asteroid::hit()
 
 bool Asteroid::wallCollision()
 {	
-	if (m_top > 0.f && m_bottom < 800.f && m_left > 0.f && m_right < 1000.f) {
+	if (m_top > 0.f && m_bottom < SCREEN_HEIGHT && m_left > 0.f && m_right < SCREEN_WIDTH) {
 		return false;
 	}
 	else {

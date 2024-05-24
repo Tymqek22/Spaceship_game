@@ -15,7 +15,7 @@ public:
 	void setYPosition(float yPos);
 	void updateLenght(float currentHealth, float maxHealth);
 
-	void update(const sf::Vector2f& move, float currentHealth);
+	void update(const sf::Vector2f& move, float currentHealth, float maxHealth);
 	void render(sf::RenderTarget* target);
 };
 

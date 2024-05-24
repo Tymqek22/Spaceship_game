@@ -1,5 +1,6 @@
 #include "Spaceship.h"
 #include "BulletManager.h"
+#include "Globals.h"
 
 #include <iostream>
 

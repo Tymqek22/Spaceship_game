@@ -1,4 +1,5 @@
 #include "Powerup.h"
+#include "Globals.h"
 
 sf::Vector2f Powerup::getPosition() const
 {
@@ -26,7 +27,7 @@ bool Powerup::collision(const sf::FloatRect& object)
 
 bool Powerup::hasGone()
 {
-	if (m_powerup.getGlobalBounds().top + m_powerup.getGlobalBounds().height >= 1000.f) {
+	if (m_powerup.getGlobalBounds().top + m_powerup.getGlobalBounds().height >= SCREEN_HEIGHT) {
 		return true;
 	}
 	else {
@@ -50,7 +51,7 @@ void Powerup::update(SpaceshipPlayer* spaceship)
 		m_alive = false;
 	}
 	else {
-		m_powerup.move(0.f, 5.f);
+		m_powerup.move(0.f, POWERUP_SPEED);
 	}
 }
 

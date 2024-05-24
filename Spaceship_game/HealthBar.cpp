@@ -1,11 +1,12 @@
 #include "HealthBar.h"
+#include "Globals.h"
 
 HealthBar::HealthBar() : m_dynamicBarLenght{ 78.f }
 {
-	m_baseBar.setSize(sf::Vector2f(80.f, 8.f));
+	m_baseBar.setSize(HPBASEBAR_SIZE);
 	m_baseBar.setFillColor(sf::Color::White);
 
-	m_dynamicBar.setSize(sf::Vector2f(78.f, 6.f));
+	m_dynamicBar.setSize(HPDYNAMICBAR_SIZE);
 	m_dynamicBar.setFillColor(sf::Color::Red);
 }
 
@@ -32,9 +33,9 @@ void HealthBar::updateLenght(float currentHealth, float maxHealth)
 	m_dynamicBar.setSize(sf::Vector2f(lenght, 6.f));
 }
 
-void HealthBar::update(const sf::Vector2f& movingVector, float currentHealth)
+void HealthBar::update(const sf::Vector2f& movingVector, float currentHealth, float maxHealth)
 {
-	this->updateLenght(currentHealth, 50.f);
+	this->updateLenght(currentHealth, maxHealth);
 
 	m_baseBar.move(movingVector);
 	m_dynamicBar.move(movingVector);

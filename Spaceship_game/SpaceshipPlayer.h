@@ -9,9 +9,8 @@ enum class PowerupType { reloadTime, shield, multishoot };
 class SpaceshipPlayer : public Spaceship
 {
 private:
-	float SHOOTING_COOLDOWN;
-	float POWERUP_COOLDOWN;
 	int m_points;
+	float m_shootingCooldown;
 	bool m_lowerScale;
 	bool m_powerupActive;
 	bool m_alive;

@@ -1,17 +1,12 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
 
 #include "Asteroid.h"
 
 class Bullet
 {
 private:
-	float BULLET_SPEED = 12.f;
 	bool m_alive;
 
 	sf::RectangleShape m_bullet;

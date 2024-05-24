@@ -7,10 +7,11 @@
 #include "PowerupReloadTime.h"
 #include "PowerupShield.h"
 #include "PowerupMultishoot.h"
+#include "Globals.h"
 
-Game::Game() : m_asteroidBooster{0.f}, m_gameStarted{ false }, m_exit{ false }
+Game::Game() : m_asteroidBooster{ 0.f }, m_gameStarted{ false }, m_exit{ false }
 {
-	m_window = new sf::RenderWindow(sf::VideoMode(1000, 800), "Spaceship Game", sf::Style::Default);
+	m_window = new sf::RenderWindow(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Spaceship Game", sf::Style::Default);
 	m_window->setFramerateLimit(60);
 
 	if (!m_texture.loadFromFile("Textures/Background.jpg")) {
@@ -201,7 +202,7 @@ void Game::render()
 void Game::normalLevelUpdate()
 {
 	if (m_asteroids.size() == 0) {
-		m_asteroidBooster += 0.1f;
+		m_asteroidBooster += ASTEROID_BOOSTER;
 
 		this->createAsteroids();
 	}

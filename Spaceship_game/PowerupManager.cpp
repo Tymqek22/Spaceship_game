@@ -2,6 +2,7 @@
 #include "PowerupReloadTime.h"
 #include "PowerupShield.h"
 #include "PowerupMultishoot.h"
+#include "Globals.h"
 #include <random>
 
 bool PowerupManager::createPowerup(float time, std::vector<Powerup*>& powerups)
@@ -9,7 +10,7 @@ bool PowerupManager::createPowerup(float time, std::vector<Powerup*>& powerups)
 	std::mt19937 mt(std::random_device{}());
 	std::uniform_int_distribution<int> powerupChoosing{ 1,3 };
 
-	if (time >= 10.f) {
+	if (time >= POWERUP_TIMER) {
 
 		int randomPowerup = powerupChoosing(mt);
 

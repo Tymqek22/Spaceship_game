@@ -4,16 +4,12 @@
 #include "HealthBar.h"
 
 #include <SFML/Graphics.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
+
 #include <vector>
 
 class Spaceship
 {
 protected:
-	float SHIP_SPEED = 8.f;
 	float m_healthPoints;
 	sf::Texture m_texture;
 	sf::Sprite m_entity;

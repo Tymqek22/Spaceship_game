@@ -1,17 +1,17 @@
 #include "SpaceshipPlayer.h"
 #include "BulletManager.h"
+#include "Globals.h"
 
 #include <iostream>
-#include <cmath>
 
 SpaceshipPlayer::SpaceshipPlayer() 
-	: SHOOTING_COOLDOWN{0.5f}, POWERUP_COOLDOWN{4.f}, m_points{0}, m_lowerScale{false}, m_powerupActive{false}, m_alive{true}
+	: m_points{0}, m_shootingCooldown{PLAYERSHOOTING_COOLDOWN}, m_lowerScale{false}, m_powerupActive{false}, m_alive{true}
 {
 	if (!m_texture.loadFromFile("Textures/PlayerShip.png")) {
 		std::cerr << "Error with opening a file.";
 	}
 
-	m_healthPoints = 50;
+	m_healthPoints = PLAYER_HEALTH;
 	m_entity.setTexture(m_texture);
 	m_entity.setScale(0.3f, 0.3f);
 	m_entity.setPosition(480.f, 670.f);
@@ -23,7 +23,7 @@ SpaceshipPlayer::~SpaceshipPlayer() {}
 
 void SpaceshipPlayer::setCooldown(float cooldown)
 {
-	SHOOTING_COOLDOWN = cooldown;
+	m_shootingCooldown = cooldown;
 }
 
 void SpaceshipPlayer::setPowerupType(const PowerupType& powerup)
@@ -69,7 +69,7 @@ int SpaceshipPlayer::getPoints()
 
 float SpaceshipPlayer::getPowerupTimer() const
 {
-	sf::Time time = sf::seconds(4.f) - m_powerupTimer.getElapsedTime();
+	sf::Time time = sf::seconds(POWERUP_COOLDOWN) - m_powerupTimer.getElapsedTime();
 
 	return time.asSeconds();
 }
@@ -129,7 +129,7 @@ void SpaceshipPlayer::controlPowerup()
 	switch (m_currentPowerup) {
 		
 	case PowerupType::reloadTime: {
-		this->setCooldown(0.5f);
+		this->setCooldown(PLAYERSHOOTING_COOLDOWN);
 		m_powerupActive = false;
 		break;
 	}
@@ -153,15 +153,17 @@ void SpaceshipPlayer::updateShip()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
 
 		if (m_entity.getGlobalBounds().left > 0.f) {
-			m_entity.move(-SHIP_SPEED, 0.f);
-			m_healthBar.update(sf::Vector2f(-SHIP_SPEED, 0.f), this->getHealth());
+
+			m_entity.move(-PLAYER_SPEED, 0.f);
+			m_healthBar.update(sf::Vector2f(-PLAYER_SPEED, 0.f), this->getHealth(), PLAYER_HEALTH);
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
 
-		if (m_entity.getGlobalBounds().width + m_entity.getGlobalBounds().left < 1000.f) {
-			m_entity.move(SHIP_SPEED, 0.f);
-			m_healthBar.update(sf::Vector2f(SHIP_SPEED, 0.f), this->getHealth());
+		if (m_entity.getGlobalBounds().width + m_entity.getGlobalBounds().left < SCREEN_WIDTH) {
+
+			m_entity.move(PLAYER_SPEED, 0.f);
+			m_healthBar.update(sf::Vector2f(PLAYER_SPEED, 0.f), this->getHealth(), PLAYER_HEALTH);
 		}
 		
 	}
@@ -169,7 +171,7 @@ void SpaceshipPlayer::updateShip()
 	//shooting
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 		
-		if (timer.asSeconds() >= SHOOTING_COOLDOWN) {
+		if (timer.asSeconds() >= m_shootingCooldown) {
 
 			this->shoot();
 			m_clock.restart();
@@ -182,7 +184,7 @@ void SpaceshipPlayer::updateShip()
 		this->controlPowerup();
 	}
 
-	m_healthBar.updateLenght(this->getHealth(), 50.f);
+	m_healthBar.updateLenght(this->getHealth(), PLAYER_HEALTH);
 }
 
 void SpaceshipPlayer::updateBullets(std::vector<Asteroid*>& asteroids)

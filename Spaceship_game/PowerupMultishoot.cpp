@@ -1,10 +1,11 @@
 #include "PowerupMultishoot.h"
+#include "Globals.h"
 #include <random>
 
 PowerupMultishoot::PowerupMultishoot() : Powerup()
 {
 	m_powerup.setFillColor(sf::Color::White);
-	m_powerup.setSize(sf::Vector2f(20.f, 20.f));
+	m_powerup.setSize(POWERUP_SIZE);
 
 	std::mt19937 mt(std::random_device{}());
 	std::uniform_real_distribution<float> range{ 0.f,980.f };

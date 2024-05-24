@@ -2,9 +2,6 @@
 
 #include <iostream>
 
-extern int SCREEN_WIDTH = 1200;
-extern const int SCREEN_HEIGHT = 800;
-
 int main()
 {
     Game game;

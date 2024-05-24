@@ -9,8 +9,6 @@
 #include "Powerup.h"
 #include "HealthBar.h"
 
-//TODO: komunikaty game over, info o powerupie, press start
-
 class Game
 {
 private:
@@ -20,7 +18,7 @@ private:
 	sf::Event m_ev;
 	TextManager m_text;
 	sf::Clock m_powerupTimer;
-	float m_asteroidBooster;
+	float m_asteroidBooster; 
 	bool m_gameStarted;
 	bool m_exit;
 
