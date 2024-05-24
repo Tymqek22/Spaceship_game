@@ -14,6 +14,8 @@
 class Game
 {
 private:
+	sf::Texture m_texture;
+	sf::Sprite m_background;
 	sf::RenderWindow* m_window;
 	sf::Event m_ev;
 	TextManager m_text;

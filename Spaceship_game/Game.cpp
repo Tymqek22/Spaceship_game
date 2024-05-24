@@ -13,6 +13,13 @@ Game::Game() : m_asteroidBooster{0.f}, m_gameStarted{ false }, m_exit{ false }
 	m_window = new sf::RenderWindow(sf::VideoMode(1000, 800), "Spaceship Game", sf::Style::Default);
 	m_window->setFramerateLimit(60);
 
+	if (!m_texture.loadFromFile("Textures/Background.jpg")) {
+		std::cerr << "Error with loading an image";
+	}
+
+	m_background.setTexture(m_texture);
+	m_background.setPosition(0.f, 0.f);
+
 	this->createAsteroids();
 	m_enemy.setPlayerAsEnemy(&m_ship);
 }
@@ -124,7 +131,8 @@ void Game::startScreen()
 	credits.setFillColor(sf::Color::White);
 	this->pollEvents();
 
-	m_window->clear(sf::Color::Black);
+	m_window->clear();
+	m_window->draw(m_background);
 	m_window->draw(title);
 	m_window->draw(text);
 	m_window->draw(userManual);
@@ -147,13 +155,14 @@ void Game::endScreen()
 	endingText.setFillColor(sf::Color::Yellow);
 	score.setPosition(360.f, 300.f);
 	score.setFillColor(sf::Color::White);
-	userManual.setPosition(370.f, 370.f);
+	userManual.setPosition(365.f, 370.f);
 	userManual.setFillColor(sf::Color::White);
 	
 
 	this->pollEvents();
 
-	m_window->clear(sf::Color::Black);
+	m_window->clear();
+	m_window->draw(m_background);
 	m_ship.renderShip(m_window, 0);
 	AsteroidManager manager;
 	manager.renderAsteroids(m_asteroids, m_window);
@@ -230,7 +239,8 @@ void Game::bossFightUpdate()
 
 void Game::normalLevelRender()
 {
-	m_window->clear(sf::Color::Black);
+	m_window->clear();
+	m_window->draw(m_background);
 
 	m_ship.renderShip(m_window, 1);
 	m_ship.renderBullets(m_window);
@@ -248,7 +258,8 @@ void Game::normalLevelRender()
 
 void Game::bossFightRender()
 {
-	m_window->clear(sf::Color::Black);
+	m_window->clear();
+	m_window->draw(m_background);
 
 	m_ship.renderShip(m_window, 1);
 	m_ship.renderBullets(m_window);
