@@ -40,10 +40,13 @@ float Spaceship::getHealth() const
 	return m_healthPoints;
 }
 
-void Spaceship::renderShip(sf::RenderTarget* target)
+void Spaceship::renderShip(sf::RenderTarget* target, bool withHealthBar)
 {
 	target->draw(m_entity);
-	m_healthBar.render(target);
+
+	if (withHealthBar) {
+		m_healthBar.render(target);
+	}
 }
 
 void Spaceship::renderBullets(sf::RenderTarget* target)

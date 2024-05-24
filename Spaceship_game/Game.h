@@ -20,7 +20,7 @@ private:
 	sf::Clock m_powerupTimer;
 	float m_asteroidBooster;
 	bool m_gameStarted;
-	bool m_gameFinished;
+	bool m_exit;
 
 	SpaceshipPlayer m_ship;
 	SpaceshipEnemy m_enemy;
@@ -35,11 +35,13 @@ public:
 
 	bool isRunning() const;
 	bool gameStarted();
+	bool exit();
 
 	void pollEvents();
 	void managePowerups();
 
 	void startScreen();
+	void endScreen();
 	void update();
 	void render();
 	void bossFightUpdate();

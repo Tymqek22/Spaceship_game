@@ -8,7 +8,7 @@
 #include "PowerupShield.h"
 #include "PowerupMultishoot.h"
 
-Game::Game() : m_asteroidBooster{0.f}, m_gameStarted{ false }, m_gameFinished{ false }
+Game::Game() : m_asteroidBooster{0.f}, m_gameStarted{ false }, m_exit{ false }
 {
 	m_window = new sf::RenderWindow(sf::VideoMode(1000, 800), "Spaceship Game", sf::Style::Default);
 	m_window->setFramerateLimit(60);
@@ -49,7 +49,7 @@ void Game::createAsteroids()
 
 bool Game::isRunning() const
 {
-	return (m_window->isOpen() && m_ship.isAlive()) && !m_gameFinished;
+	return m_window->isOpen() && m_ship.isAlive();
 }
 
 bool Game::gameStarted()
@@ -62,19 +62,24 @@ bool Game::gameStarted()
 	return false;
 }
 
+bool Game::exit()
+{
+	return m_exit;
+}
+
 void Game::pollEvents()
 {
 	while (m_window->pollEvent(m_ev)) {
 
 		switch (m_ev.type) {
 		case sf::Event::Closed:
-			m_gameFinished = true;
+			m_exit = true;
 			m_window->close();
 			break;
 
 		case sf::Event::KeyPressed: {
 			if (m_ev.key.code == sf::Keyboard::Escape) {
-				m_gameFinished = true;
+				m_exit = true;
 				m_window->close();
 				break;
 			}
@@ -124,7 +129,38 @@ void Game::startScreen()
 	m_window->draw(text);
 	m_window->draw(userManual);
 	m_window->draw(credits);
-	m_ship.renderShip(m_window);
+	m_ship.renderShip(m_window, 0);
+
+	m_window->display();
+}
+
+void Game::endScreen()
+{
+	sf::Font font;
+	font.loadFromFile("Font/Retro_Gaming.ttf");
+
+	sf::Text endingText("Game Over", font, 60);
+	sf::Text userManual("Press [Esc] to exit", font, 20);
+	sf::Text score("Your score: " + std::to_string(m_ship.getPoints()), font, 30);
+
+	endingText.setPosition(300.f, 200.f);
+	endingText.setFillColor(sf::Color::Yellow);
+	score.setPosition(360.f, 300.f);
+	score.setFillColor(sf::Color::White);
+	userManual.setPosition(370.f, 370.f);
+	userManual.setFillColor(sf::Color::White);
+	
+
+	this->pollEvents();
+
+	m_window->clear(sf::Color::Black);
+	m_ship.renderShip(m_window, 0);
+	AsteroidManager manager;
+	manager.renderAsteroids(m_asteroids, m_window);
+
+	m_window->draw(endingText);
+	m_window->draw(userManual);
+	m_window->draw(score);
 
 	m_window->display();
 }
@@ -196,7 +232,7 @@ void Game::normalLevelRender()
 {
 	m_window->clear(sf::Color::Black);
 
-	m_ship.renderShip(m_window);
+	m_ship.renderShip(m_window, 1);
 	m_ship.renderBullets(m_window);
 
 	AsteroidManager manager;
@@ -214,10 +250,10 @@ void Game::bossFightRender()
 {
 	m_window->clear(sf::Color::Black);
 
-	m_ship.renderShip(m_window);
+	m_ship.renderShip(m_window, 1);
 	m_ship.renderBullets(m_window);
 
-	m_enemy.renderShip(m_window);
+	m_enemy.renderShip(m_window, 1);
 	m_enemy.renderBullets(m_window);
 
 	m_text.renderAll(m_window);

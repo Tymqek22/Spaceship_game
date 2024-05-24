@@ -36,7 +36,7 @@ public:
 	virtual bool hasAShield() = 0;
 
 	virtual void updateShip() = 0;
-	void renderShip(sf::RenderTarget* target);
+	void renderShip(sf::RenderTarget* target, bool withHealthBar);
 	void renderBullets(sf::RenderTarget* target);
 
 };

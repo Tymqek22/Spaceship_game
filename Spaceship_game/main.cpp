@@ -23,5 +23,10 @@ int main()
 
     }
 
+    while (!game.exit()) {
+
+        game.endScreen();
+    }
+
     std::cout << "Hello World!\n";
 }
