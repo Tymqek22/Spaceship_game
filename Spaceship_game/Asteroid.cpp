@@ -129,13 +129,10 @@ bool Asteroid::wallCollision()
 	if (m_top > 0.f && m_bottom < SCREEN_HEIGHT && m_left > 0.f && m_right < SCREEN_WIDTH) {
 		return false;
 	}
-	else {
-		this->bounce();
-	}
-	return false;
+	return true;
 }
 
-bool Asteroid::asteroidCollision(const sf::FloatRect& object)
+bool Asteroid::objectCollision(const sf::FloatRect& object)
 {
 	if (this->getAreaToCheck().intersects(object)) {
 		return true;
@@ -144,22 +141,14 @@ bool Asteroid::asteroidCollision(const sf::FloatRect& object)
 	return false;
 }
 
-void Asteroid::bounceFromAsteroid(Asteroid& asteroid)
-{
-	sf::FloatRect currentAsteroid(this->getPosition(), this->getSize());
-	sf::FloatRect asteroidToCheck(asteroid.getPosition(), asteroid.getSize());
-
-	if (currentAsteroid.intersects(asteroidToCheck) && this->getTopBound() <= asteroid.getBottomBound()) {
-		m_yDirection = -m_yDirection;
-	}
-	else if (currentAsteroid.intersects(asteroidToCheck) && this->getBottomBound() >= asteroid.getTopBound()) {
-		m_yDirection = -m_yDirection;
-	}
-}
-
 void Asteroid::update()
 {
 	if (!this->wallCollision()) {
+		m_asteroid.move(m_xDirection, m_yDirection);
+		this->setBounds();
+	}
+	else {
+		this->bounce();
 		m_asteroid.move(m_xDirection, m_yDirection);
 		this->setBounds();
 	}

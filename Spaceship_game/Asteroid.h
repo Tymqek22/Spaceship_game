@@ -39,18 +39,10 @@ public:
 	void bounce();
 	void hit();
 
-	bool leftSideCollision();
-	bool rightSideCollision();
-	bool topSideCollision();
-	bool bottomSideCollision();
-
 	bool wallCollision();
-	bool asteroidCollision(const sf::FloatRect& object);
+	bool objectCollision(const sf::FloatRect& object);
 
-	void bounceFromAsteroid(Asteroid& asteroid);
 	void update();
-
-
 	void render(sf::RenderTarget* target);
 };
 

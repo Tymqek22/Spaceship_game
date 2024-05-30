@@ -14,10 +14,9 @@ void AsteroidManager::manageLifetime(std::vector<Asteroid*>& asteroids)
 
 void AsteroidManager::manageAsteroids(std::vector<Asteroid*>& asteroids, SpaceshipPlayer& player)
 {
-
 	for (auto& asteroid : asteroids) {
 
-		if (asteroid->asteroidCollision(player.getAreaToCheck()) && !player.hasAShield()) {
+		if (asteroid->objectCollision(player.getAreaToCheck()) && !player.hasAShield()) {
 			player.hit();
 			asteroid->hit();
 		}
