@@ -2,12 +2,11 @@
 #include "Spaceship.h"
 #include "Globals.h"
 
-Bullet::Bullet(const sf::Vector2f& startPos) : m_startPosition{ startPos }
+Bullet::Bullet(const sf::Vector2f& startPos) : m_startPosition{ startPos }, m_alive{ true }
 {
 	m_bullet.setSize(BULLET_SIZE);
 	m_bullet.setFillColor(sf::Color::Green);
 	m_bullet.setPosition(m_startPosition);
-	m_alive = true;
 }
 
 Bullet::~Bullet() {}
@@ -32,7 +31,7 @@ void Bullet::hit()
 	m_alive = false;
 }
 
-bool Bullet::detectedCollision()
+bool Bullet::wallCollision()
 {
 	if (m_bullet.getGlobalBounds().top <= 0.f) {
 		return true;

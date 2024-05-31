@@ -14,7 +14,7 @@ protected:
 	sf::Clock m_timer;
 
 public:
-	Powerup() : m_hostSpaceship{nullptr}, m_activated{ false }, m_alive{ true } {}
+	Powerup() : m_hostSpaceship{ nullptr }, m_activated{ false }, m_alive{ true } {}
 
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;

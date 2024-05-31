@@ -21,7 +21,7 @@ public:
 	Spaceship() = default;
 	virtual ~Spaceship() = default;
 	
-	sf::Vector2f getWeaponPosition() const;
+	sf::Vector2f getCenterPosition() const;
 	sf::Vector2f getPosition() const;
 	sf::Vector2f getSize() const;
 	sf::FloatRect getAreaToCheck() const;

@@ -234,7 +234,7 @@ void Game::bossFightUpdate()
 
 	if (!m_enemy.isAlive()) {
 
-		m_ship.setPoints(10);
+		m_ship.increasePoints(10);
 	}
 }
 

@@ -44,8 +44,8 @@ void Powerup::update(SpaceshipPlayer* spaceship)
 {
 	if (this->collision(spaceship->getAreaToCheck())) {
 		m_hostSpaceship = spaceship;
-		m_alive = false;
 		this->activate();
+		m_alive = false;
 	}
 	else if (this->hasGone()) {
 		m_alive = false;

@@ -24,7 +24,7 @@ public:
 	void setCooldown(float cooldown);
 	void setPowerupType(const PowerupType& powerup);
 	void setPowerupActivation(bool activated);
-	void setPoints(int points);
+	void increasePoints(int points);
 
 	sf::Vector2f getLeftWeaponPosition() const;
 	sf::Vector2f getRightWeaponPosition() const;
@@ -39,7 +39,7 @@ public:
 	void shoot() override;
 	void hit() override;
 
-	void controlPowerup();
+	void deactivatePowerup();
 	void updateShip() override;
 	void updateBulletsWithEnemy(Spaceship* spaceship);
 	void updateBullets(std::vector<Asteroid*>& asteroids);

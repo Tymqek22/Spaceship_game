@@ -9,6 +9,5 @@ public:
 	~PowerupShield();
 
 	void activate() override;
-
 };
 

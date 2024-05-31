@@ -1,15 +1,17 @@
 #include "AsteroidManager.h"
+#include <algorithm>
 
 void AsteroidManager::manageLifetime(std::vector<Asteroid*>& asteroids)
 {
-	for (int i = 0; i < asteroids.size(); i++) {
-
-		if (!asteroids[i]->getAliveStatus()) {
-
-			delete asteroids[i];
-			asteroids.erase(asteroids.begin() + i);
-		}
-	}
+	asteroids.erase(std::remove_if(asteroids.begin(), asteroids.end(), [](Asteroid* asteroid)
+		{
+			if (!asteroid->getAliveStatus()) {
+				delete asteroid;
+				return true;
+			}
+			else
+				return false;
+		}), asteroids.end());
 }
 
 void AsteroidManager::manageAsteroids(std::vector<Asteroid*>& asteroids, SpaceshipPlayer& player)

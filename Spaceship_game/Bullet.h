@@ -22,7 +22,7 @@ public:
 
 	void hit();
 
-	bool detectedCollision();
+	bool wallCollision();
 	bool objectCollision(const sf::FloatRect& area);
 	void update();
 	void enemyUpdate();

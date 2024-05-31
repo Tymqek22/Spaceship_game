@@ -15,7 +15,7 @@ SpaceshipPlayer::SpaceshipPlayer()
 	m_entity.setTexture(m_texture);
 	m_entity.setScale(0.3f, 0.3f);
 	m_entity.setPosition(480.f, 670.f);
-	m_healthBar.setXPosition(this->getWeaponPosition());
+	m_healthBar.setXPosition(this->getCenterPosition());
 	m_healthBar.setYPosition(780.f);
 }		
 
@@ -41,7 +41,7 @@ void SpaceshipPlayer::setPowerupActivation(bool activated)
 	}
 }
 
-void SpaceshipPlayer::setPoints(int points)
+void SpaceshipPlayer::increasePoints(int points)
 {
 	m_points += points;
 }
@@ -108,7 +108,7 @@ void SpaceshipPlayer::shoot()
 		m_bulletsShot.push_back(rightBullet);
 	}
 	else {
-		Bullet bullet(this->getWeaponPosition());
+		Bullet bullet(this->getCenterPosition());
 
 		m_bulletsShot.push_back(bullet);
 	}
@@ -124,7 +124,7 @@ void SpaceshipPlayer::hit()
 	std::cout << "Player was hit!\n";
 }
 
-void SpaceshipPlayer::controlPowerup()
+void SpaceshipPlayer::deactivatePowerup()
 {
 	switch (m_currentPowerup) {
 		
@@ -181,7 +181,7 @@ void SpaceshipPlayer::updateShip()
 	//powerup deactivating
 	if (m_powerupActive && powerupTimer.asSeconds() <= 0.f) {
 
-		this->controlPowerup();
+		this->deactivatePowerup();
 	}
 
 	m_healthBar.updateLenght(this->getHealth(), PLAYER_HEALTH);
@@ -190,11 +190,9 @@ void SpaceshipPlayer::updateShip()
 void SpaceshipPlayer::updateBullets(std::vector<Asteroid*>& asteroids)
 {
 	BulletManager manager;
-	manager.manageLifetime(m_bulletsShot, asteroids);
+	manager.manageLifetime(m_bulletsShot, asteroids, this);
 	manager.eraseBullets(m_bulletsShot);
 	manager.movePlayerBullets(m_bulletsShot);
-
-	m_points += manager.getEarnedPoints();
 }
 
 void SpaceshipPlayer::updateBulletsWithEnemy(Spaceship* spaceship)

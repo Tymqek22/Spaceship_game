@@ -14,7 +14,7 @@ SpaceshipEnemy::SpaceshipEnemy() : m_alive{true}, m_player{nullptr}
 	m_entity.setTexture(m_texture);
 	m_entity.setScale(0.1f, 0.1f);
 	m_entity.setPosition(480.f, 30.f);
-	m_healthBar.setXPosition(this->getWeaponPosition());
+	m_healthBar.setXPosition(this->getCenterPosition());
 	m_healthBar.setYPosition(5.f);
 }
 
@@ -37,7 +37,7 @@ bool SpaceshipEnemy::hasAShield()
 
 void SpaceshipEnemy::shoot()
 {
-	Bullet bullet(this->getWeaponPosition());
+	Bullet bullet(this->getCenterPosition());
 
 	m_bulletsShot.push_back(bullet);
 }
@@ -57,11 +57,11 @@ void SpaceshipEnemy::updateShip()
 {
 	sf::Time timer = m_clock.getElapsedTime();
 
-	if (m_player->getWeaponPosition().x > m_entity.getGlobalBounds().left + m_entity.getGlobalBounds().width) {
+	if (m_player->getCenterPosition().x > m_entity.getGlobalBounds().left + m_entity.getGlobalBounds().width) {
 		m_entity.move(ENEMY_SPEED, 0.f);
 		m_healthBar.update(sf::Vector2f(ENEMY_SPEED, 0.f), this->getHealth(), ENEMY_HEALTH);
 	}
-	else if (m_player->getWeaponPosition().x < m_entity.getGlobalBounds().left) {
+	else if (m_player->getCenterPosition().x < m_entity.getGlobalBounds().left) {
 		m_entity.move(-ENEMY_SPEED, 0.f);
 		m_healthBar.update(sf::Vector2f(-ENEMY_SPEED, 0.f), this->getHealth(), ENEMY_HEALTH);
 	}

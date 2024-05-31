@@ -4,6 +4,7 @@
 #include "PowerupMultishoot.h"
 #include "Globals.h"
 #include <random>
+#include <algorithm>
 
 bool PowerupManager::createPowerup(float time, std::vector<Powerup*>& powerups)
 {
@@ -38,14 +39,15 @@ bool PowerupManager::createPowerup(float time, std::vector<Powerup*>& powerups)
 
 void PowerupManager::manageLifetime(std::vector<Powerup*>& powerups)
 {
-	for (int i = 0; i < powerups.size(); i++) {
-
-		if (!powerups[i]->alive()) {
-
-			delete powerups[i];
-			powerups.erase(powerups.begin() + i);
-		}
-	}
+	powerups.erase(std::remove_if(powerups.begin(), powerups.end(), [](Powerup* powerup)
+		{
+			if (!powerup->alive()) {
+				delete powerup;
+				return true;
+			}
+			else
+				return false;
+		}), powerups.end());
 }
 
 void PowerupManager::updatePowerups(std::vector<Powerup*>& powerups, SpaceshipPlayer* player)

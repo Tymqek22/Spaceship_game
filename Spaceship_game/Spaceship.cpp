@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-sf::Vector2f Spaceship::getWeaponPosition() const
+sf::Vector2f Spaceship::getCenterPosition() const
 {
 	sf::Vector2f position;
 

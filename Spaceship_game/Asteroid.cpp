@@ -61,14 +61,14 @@ bool Asteroid::getAliveStatus() const
 
 void Asteroid::setBoost(float boost)
 {
-	if (m_xDirection > 0) {
+	if (m_xDirection > 0.0f) {
 		m_xDirection += boost;
 	}
 	else {
 		m_xDirection -= boost;
 	}
 
-	if (m_yDirection > 0) {
+	if (m_yDirection > 0.0f) {
 		m_yDirection += boost;
 	}
 	else {
@@ -79,11 +79,11 @@ void Asteroid::setBoost(float boost)
 void Asteroid::setDirection()
 {
 	std::mt19937 mt(std::random_device{}());
-	std::uniform_int_distribution<int> range{ -2,2 };
+	std::uniform_real_distribution<float> range{ -2.0f, 2.0f };
 	do {
-		m_xDirection = static_cast<float>(range(mt));
-		m_yDirection = static_cast<float>(range(mt));
-	} while ((m_xDirection == 0.f || m_yDirection == 0.f));
+		m_xDirection = range(mt);
+		m_yDirection = range(mt);
+	} while ((m_xDirection == 0.0f || m_yDirection == 0.0f));
 }
 
 void Asteroid::setPosition()
@@ -137,7 +137,6 @@ bool Asteroid::objectCollision(const sf::FloatRect& object)
 	if (this->getAreaToCheck().intersects(object)) {
 		return true;
 	}
-
 	return false;
 }
 

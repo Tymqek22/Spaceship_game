@@ -1,24 +1,21 @@
 #include "BulletManager.h"
+#include <algorithm>
 
-BulletManager::BulletManager() : m_pointsEarned{ 0 } {}
-
-int BulletManager::getEarnedPoints() const
-{
-	return m_pointsEarned;
-}
+BulletManager::BulletManager() {}
 
 void BulletManager::eraseBullets(std::vector<Bullet>& bullets)
 {
-	for (int i = 0; i < bullets.size(); i++) {
-
-		if (!bullets[i].getAliveStatus() || bullets[i].detectedCollision()) {
-
-			bullets.erase(bullets.begin() + i);
-		}
-	}
+	bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](Bullet& bullet) 
+		{
+			if (!bullet.getAliveStatus() || bullet.wallCollision()) {
+				return true;
+			}
+			else
+				return false;
+		}), bullets.end());
 }
 
-void BulletManager::manageLifetime(std::vector<Bullet>& bullets, std::vector<Asteroid*>& asteroids)
+void BulletManager::manageLifetime(std::vector<Bullet>& bullets, std::vector<Asteroid*>& asteroids, SpaceshipPlayer* player)
 {
 	for (auto& bullet : bullets) {
 
@@ -28,7 +25,7 @@ void BulletManager::manageLifetime(std::vector<Bullet>& bullets, std::vector<Ast
 
 				bullet.hit();
 				asteroid->hit();
-				m_pointsEarned++;
+				player->increasePoints(1);
 			}
 		}
 	}
