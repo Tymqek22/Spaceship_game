@@ -93,6 +93,8 @@ void Game::pollEvents()
 			}
 			else if (m_ev.key.code == sf::Keyboard::Enter) {
 				m_gameStarted = true;
+				m_text.clear();
+				m_text.startGame();
 				break;
 			}
 		}
@@ -115,29 +117,18 @@ void Game::managePowerups()
 
 void Game::startScreen()
 {
-	sf::Font font;
-	font.loadFromFile("Font/Retro_Gaming.ttf");
-	sf::Text title("Space Shooting", font, 60);
-	sf::Text text("Press [Enter] to start", font, 30);
-	sf::Text userManual("Left - [Left arrow]\nRight - [Right arrow]\nShoot - [Space]\nExit - [Esc]", font, 17);
-	sf::Text credits("Created by Tymoteusz Procner", font, 15);
+	m_text.addMessage(MessageType::title, "Space Shooting", sf::Vector2f(220.f, 50.f), 60, sf::Color::Yellow);
+	m_text.addMessage(MessageType::infoForUser, "Press [Enter] to start", sf::Vector2f(280.f, 200.f), 30, sf::Color::White);
+	m_text.addMessage(MessageType::userManual, "Left - [Left arrow]\nRight - [Right arrow]\nShoot - [Space]\nExit - [Esc]",
+		sf::Vector2f(5.f, 680.f), 17, sf::Color::White);
+	m_text.addMessage(MessageType::credits, "Created by Tymoteusz Procner", sf::Vector2f(660.f, 750.f), 15, sf::Color::White);
 
-	title.setPosition(220.f, 50.f);
-	title.setFillColor(sf::Color::Yellow);
-	text.setPosition(280.f, 200.f);
-	text.setFillColor(sf::Color::White);
-	userManual.setPosition(5.f, 680.f);
-	userManual.setFillColor(sf::Color::White);
-	credits.setPosition(660.f, 750.f);
-	credits.setFillColor(sf::Color::White);
 	this->pollEvents();
 
 	m_window->clear();
+
 	m_window->draw(m_background);
-	m_window->draw(title);
-	m_window->draw(text);
-	m_window->draw(userManual);
-	m_window->draw(credits);
+	m_text.renderAll(m_window);
 	m_ship.renderShip(m_window, 0);
 
 	m_window->display();
@@ -145,32 +136,23 @@ void Game::startScreen()
 
 void Game::endScreen()
 {
-	sf::Font font;
-	font.loadFromFile("Font/Retro_Gaming.ttf");
+	m_text.clear();
 
-	sf::Text endingText("Game Over", font, 60);
-	sf::Text userManual("Press [Esc] to exit", font, 20);
-	sf::Text score("Your score: " + std::to_string(m_ship.getPoints()), font, 30);
-
-	endingText.setPosition(300.f, 200.f);
-	endingText.setFillColor(sf::Color::Yellow);
-	score.setPosition(360.f, 300.f);
-	score.setFillColor(sf::Color::White);
-	userManual.setPosition(365.f, 370.f);
-	userManual.setFillColor(sf::Color::White);
-	
+	m_text.addMessage(MessageType::title, "Game Over", sf::Vector2f(300.f, 200.f), 60, sf::Color::Yellow);
+	m_text.addMessage(MessageType::infoForUser, "Press [Esc] to exit", sf::Vector2f(365.f, 370.f), 20, sf::Color::White);
+	m_text.addMessage(MessageType::score, "Your score: " + std::to_string(m_ship.getPoints()), sf::Vector2f(360.f, 300.f),
+		30, sf::Color::White);
 
 	this->pollEvents();
 
 	m_window->clear();
+
 	m_window->draw(m_background);
 	m_ship.renderShip(m_window, 0);
 	AsteroidManager manager;
 	manager.renderAsteroids(m_asteroids, m_window);
 
-	m_window->draw(endingText);
-	m_window->draw(userManual);
-	m_window->draw(score);
+	m_text.renderAll(m_window);
 
 	m_window->display();
 }

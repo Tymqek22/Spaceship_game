@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 
-enum class MessageType { score, powerupTimer };
+enum class MessageType { title, infoForUser, userManual, credits, score, powerupTimer };
 
 class TextMessage
 {
@@ -17,18 +17,13 @@ private:
 	unsigned int m_size;
 	MessageType m_messageType;
 	float m_scale;
-	bool m_alive;
 	
 
 public:
-	TextMessage(const std::string& content, const sf::Vector2f& position, unsigned int size, const MessageType& type, 
-		bool alive);
+	TextMessage(const std::string& content, const sf::Vector2f& position, unsigned int size, const MessageType& type,
+		const sf::Color& color = sf::Color::White);
 
 	MessageType getType() const;
-	bool isAlive() const;
-
-	void activate();
-	void deactivate();
 
 	template <typename T>
 	void update(const std::string& message, T number);

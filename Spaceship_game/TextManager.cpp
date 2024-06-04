@@ -3,20 +3,25 @@
 #include <sstream>
 #include <iomanip>
 
-TextManager::TextManager()
-{
-	TextMessage* score = new TextMessage("Score: 0", sf::Vector2f(10.f, 10.f), 30, MessageType::score, true);
-	TextMessage* powerupInfo = new TextMessage(" ", sf::Vector2f(10.f, 40.f), 50, MessageType::powerupTimer, false);
-
-	m_messages.push_back(score);
-	m_messages.push_back(powerupInfo);
-}
+TextManager::TextManager() {}
 
 TextManager::~TextManager()
 {
-	for (auto& message : m_messages) {
+	for (auto& message : m_messagesMap) {
 
-		delete message;
+		delete message.second;
+	}
+}
+
+void TextManager::addMessage(const MessageType& type, const std::string& message, const sf::Vector2f& position, 
+	unsigned int size, const sf::Color& color)
+{
+	auto foundMessage = m_messagesMap.find(type);
+
+	if (foundMessage == m_messagesMap.end()) {
+
+		TextMessage* newMessage = new TextMessage(message, position, size, type, color);
+		m_messagesMap.insert(std::pair<MessageType, TextMessage*>(newMessage->getType(), newMessage));
 	}
 }
 
@@ -24,12 +29,34 @@ void TextManager::manageLifetime(bool shipPowerupActive)
 {
 	if (shipPowerupActive) {
 
-		m_messages[1]->activate();
+		this->addMessage(MessageType::powerupTimer, "", sf::Vector2f(10.f, 40.f), 50, sf::Color::White);
 	}
 	else {
+		auto messageFound = m_messagesMap.find(MessageType::powerupTimer);
 
-		m_messages[1]->deactivate();
+		if (messageFound != m_messagesMap.end()) {
+
+			delete messageFound->second;
+			m_messagesMap.erase(messageFound->first);
+		}
 	}
+}
+
+void TextManager::clear()
+{
+	for (auto& message : m_messagesMap) {
+
+		delete message.second;
+	}
+
+	m_messagesMap.clear();
+}
+
+void TextManager::startGame()
+{
+	TextMessage* score = new TextMessage("Score: 0", sf::Vector2f(10.f, 10.f), 30, MessageType::score);
+
+	m_messagesMap.insert(std::pair<MessageType, TextMessage*>(score->getType(), score));
 }
 
 std::string TextManager::getPowerupType(const PowerupType& powerup)
@@ -54,31 +81,24 @@ std::string TextManager::getPowerupType(const PowerupType& powerup)
 
 void TextManager::update(int score, float time, const PowerupType& powerup)
 {
-	for (auto& message : m_messages) {
+	for (auto& message : m_messagesMap) {
 
-		if (message->isAlive()) {
+		switch (message.first) {
 
-			switch (message->getType()) {
-
-			case MessageType::score:
-				message->update<int>("Score", score);
-				break;
-			case MessageType::powerupTimer:
-				message->update<float>(this->getPowerupType(powerup), time);
-				break;
-			}
+		case MessageType::score:
+			message.second->update<int>("Score", score);
+			break;
+		case MessageType::powerupTimer:
+			message.second->update<float>(this->getPowerupType(powerup), time);
+			break;
 		}
 	}
 }
 
 void TextManager::renderAll(sf::RenderTarget* target)
 {
-	for (auto& message : m_messages) {
+	for (auto& message : m_messagesMap) {
 
-		if (message->isAlive()) {
-
-			message->render(target);
-		}
-		
+		message.second->render(target);
 	}
 }
