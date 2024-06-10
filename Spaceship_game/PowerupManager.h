@@ -5,9 +5,9 @@
 class PowerupManager
 {
 public:
-	bool createPowerup(float time, std::vector<Powerup*>& powerups);
-	void manageLifetime(std::vector<Powerup*>& powerups);
-	void updatePowerups(std::vector<Powerup*>& powerups, SpaceshipPlayer* player);
-	void renderPowerups(std::vector<Powerup*>& powerups, sf::RenderTarget* target);
+	bool createPowerup(float time, std::vector<std::shared_ptr<Powerup>>& powerups);
+	void manageLifetime(std::vector<std::shared_ptr<Powerup>>& powerups);
+	void updatePowerups(std::vector<std::shared_ptr<Powerup>>& powerups, SpaceshipPlayer* player);
+	void renderPowerups(std::vector<std::shared_ptr<Powerup>>& powerups, sf::RenderTarget* target);
 };
 

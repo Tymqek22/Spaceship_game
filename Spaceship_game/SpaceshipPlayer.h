@@ -4,6 +4,8 @@
 #include "Asteroid.h"
 #include "Spaceship.h"
 
+#include <memory>
+
 enum class PowerupType { reloadTime, shield, multishoot };
 
 class SpaceshipPlayer : public Spaceship
@@ -42,6 +44,6 @@ public:
 	void deactivatePowerup();
 	void updateShip() override;
 	void updateBulletsWithEnemy(Spaceship* spaceship);
-	void updateBullets(std::vector<Asteroid*>& asteroids);
+	void updateBullets(std::vector<std::shared_ptr<Asteroid>>& asteroids);
 };
 

@@ -27,14 +27,6 @@ Game::Game() : m_asteroidBooster{ 0.f }, m_gameStarted{ false }, m_exit{ false }
 
 Game::~Game()
 {
-	for (auto& asteroid : m_asteroids) {
-		delete asteroid;
-	}
-
-	for (auto& powerup : m_powerups) {
-		delete powerup;
-	}
-
 	delete m_window;
 }
 
@@ -49,7 +41,8 @@ void Game::createAsteroids()
 	m_asteroids.reserve(5);
 	for (int i = 0; i < 5; i++) {
 
-		Asteroid* asteroid = new Asteroid(asteroidTexture);
+
+		std::shared_ptr<Asteroid> asteroid = std::make_shared<Asteroid>(asteroidTexture);
 		asteroid->setBoost(m_asteroidBooster);
 		m_asteroids.push_back(asteroid);
 	}

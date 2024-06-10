@@ -20,10 +20,11 @@ int main()
 
     }
 
+    //ending screen
     while (!game.exit()) {
 
         game.endScreen();
     }
 
-    std::cout << "Hello World!\n";
+    return 0;
 }

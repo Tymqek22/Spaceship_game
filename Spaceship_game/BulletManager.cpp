@@ -15,7 +15,8 @@ void BulletManager::eraseBullets(std::vector<Bullet>& bullets)
 		}), bullets.end());
 }
 
-void BulletManager::manageLifetime(std::vector<Bullet>& bullets, std::vector<Asteroid*>& asteroids, SpaceshipPlayer* player)
+void BulletManager::manageLifetime(std::vector<Bullet>& bullets, std::vector<std::shared_ptr<Asteroid>>& asteroids,
+	SpaceshipPlayer* player)
 {
 	for (auto& bullet : bullets) {
 

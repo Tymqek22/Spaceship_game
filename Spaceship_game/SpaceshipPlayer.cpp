@@ -187,7 +187,7 @@ void SpaceshipPlayer::updateShip()
 	m_healthBar.updateLenght(this->getHealth(), PLAYER_HEALTH);
 }
 
-void SpaceshipPlayer::updateBullets(std::vector<Asteroid*>& asteroids)
+void SpaceshipPlayer::updateBullets(std::vector<std::shared_ptr<Asteroid>>& asteroids)
 {
 	BulletManager manager;
 	manager.manageLifetime(m_bulletsShot, asteroids, this);

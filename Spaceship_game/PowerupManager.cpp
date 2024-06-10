@@ -6,7 +6,7 @@
 #include <random>
 #include <algorithm>
 
-bool PowerupManager::createPowerup(float time, std::vector<Powerup*>& powerups)
+bool PowerupManager::createPowerup(float time, std::vector<std::shared_ptr<Powerup>>& powerups)
 {
 	std::mt19937 mt(std::random_device{}());
 	std::uniform_int_distribution<int> powerupChoosing{ 1,3 };
@@ -17,17 +17,17 @@ bool PowerupManager::createPowerup(float time, std::vector<Powerup*>& powerups)
 
 		switch (randomPowerup) {
 		case 1: {
-			Powerup* powerup = new PowerupReloadTime();
+			std::shared_ptr<Powerup> powerup = std::make_shared<PowerupReloadTime>();
 			powerups.push_back(powerup);
 			break;
 		}
 		case 2: {
-			Powerup* powerup = new PowerupShield();
+			std::shared_ptr<Powerup> powerup = std::make_shared<PowerupShield>();
 			powerups.push_back(powerup);
 			break;
 		}
 		case 3: {
-			Powerup* powerup = new PowerupMultishoot();
+			std::shared_ptr<Powerup> powerup = std::make_shared<PowerupMultishoot>();
 			powerups.push_back(powerup);
 			break;
 		}
@@ -37,12 +37,11 @@ bool PowerupManager::createPowerup(float time, std::vector<Powerup*>& powerups)
 	return false;
 }
 
-void PowerupManager::manageLifetime(std::vector<Powerup*>& powerups)
+void PowerupManager::manageLifetime(std::vector<std::shared_ptr<Powerup>>& powerups)
 {
-	powerups.erase(std::remove_if(powerups.begin(), powerups.end(), [](Powerup* powerup)
+	powerups.erase(std::remove_if(powerups.begin(), powerups.end(), [](std::shared_ptr<Powerup> powerup)
 		{
 			if (!powerup->alive()) {
-				delete powerup;
 				return true;
 			}
 			else
@@ -50,7 +49,7 @@ void PowerupManager::manageLifetime(std::vector<Powerup*>& powerups)
 		}), powerups.end());
 }
 
-void PowerupManager::updatePowerups(std::vector<Powerup*>& powerups, SpaceshipPlayer* player)
+void PowerupManager::updatePowerups(std::vector<std::shared_ptr<Powerup>>& powerups, SpaceshipPlayer* player)
 {
 	for (auto& powerup : powerups) {
 
@@ -58,7 +57,7 @@ void PowerupManager::updatePowerups(std::vector<Powerup*>& powerups, SpaceshipPl
 	}
 }
 
-void PowerupManager::renderPowerups(std::vector<Powerup*>& powerups, sf::RenderTarget* target)
+void PowerupManager::renderPowerups(std::vector<std::shared_ptr<Powerup>>& powerups, sf::RenderTarget* target)
 {
 	for (auto& powerup : powerups) {
 

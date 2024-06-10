@@ -1,12 +1,12 @@
 #include "AsteroidManager.h"
 #include <algorithm>
 
-void AsteroidManager::manageLifetime(std::vector<Asteroid*>& asteroids)
+void AsteroidManager::manageLifetime(std::vector<std::shared_ptr<Asteroid>>& asteroids)
 {
-	asteroids.erase(std::remove_if(asteroids.begin(), asteroids.end(), [](Asteroid* asteroid)
+	asteroids.erase(std::remove_if(asteroids.begin(), asteroids.end(), [](std::shared_ptr<Asteroid> asteroid)
 		{
 			if (!asteroid->getAliveStatus()) {
-				delete asteroid;
+				//delete asteroid;
 				return true;
 			}
 			else
@@ -14,7 +14,7 @@ void AsteroidManager::manageLifetime(std::vector<Asteroid*>& asteroids)
 		}), asteroids.end());
 }
 
-void AsteroidManager::manageAsteroids(std::vector<Asteroid*>& asteroids, SpaceshipPlayer& player)
+void AsteroidManager::manageAsteroids(std::vector<std::shared_ptr<Asteroid>>& asteroids, SpaceshipPlayer& player)
 {
 	for (auto& asteroid : asteroids) {
 
@@ -28,7 +28,7 @@ void AsteroidManager::manageAsteroids(std::vector<Asteroid*>& asteroids, Spacesh
 	}
 }
 
-void AsteroidManager::renderAsteroids(std::vector<Asteroid*>& asteroids, sf::RenderTarget* target)
+void AsteroidManager::renderAsteroids(std::vector<std::shared_ptr<Asteroid>>& asteroids, sf::RenderTarget* target)
 {
 	for (auto& asteroid : asteroids) {
 

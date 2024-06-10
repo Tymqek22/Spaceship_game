@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 #include "SpaceshipPlayer.h"
 #include "SpaceshipEnemy.h"
@@ -24,8 +25,8 @@ private:
 
 	SpaceshipPlayer m_ship;
 	SpaceshipEnemy m_enemy;
-	std::vector<Asteroid*> m_asteroids;
-	std::vector<Powerup*> m_powerups;
+	std::vector<std::shared_ptr<Asteroid>> m_asteroids;
+	std::vector<std::shared_ptr<Powerup>> m_powerups;
 
 	void createAsteroids();
 
