@@ -3,25 +3,16 @@
 #include <sstream>
 #include <iomanip>
 
-TextManager::TextManager() {}
-
-TextManager::~TextManager()
-{
-	for (auto& message : m_messagesMap) {
-
-		delete message.second;
-	}
-}
 
 void TextManager::addMessage(const MessageType& type, const std::string& message, const sf::Vector2f& position, 
 	unsigned int size, const sf::Color& color)
 {
-	auto foundMessage = m_messagesMap.find(type);
+	auto foundMessageType = m_messagesMap.find(type);
 
-	if (foundMessage == m_messagesMap.end()) {
+	if (foundMessageType == m_messagesMap.end()) {
 
-		TextMessage* newMessage = new TextMessage(message, position, size, type, color);
-		m_messagesMap.insert(std::pair<MessageType, TextMessage*>(newMessage->getType(), newMessage));
+		std::shared_ptr<TextMessage> newMessage = std::make_shared<TextMessage>(message, position, size, type, color);
+		m_messagesMap.insert(std::pair<MessageType, std::shared_ptr<TextMessage>>(newMessage->getType(), newMessage));
 	}
 }
 
@@ -36,7 +27,6 @@ void TextManager::manageLifetime(bool shipPowerupActive)
 
 		if (messageFound != m_messagesMap.end()) {
 
-			delete messageFound->second;
 			m_messagesMap.erase(messageFound->first);
 		}
 	}
@@ -44,19 +34,14 @@ void TextManager::manageLifetime(bool shipPowerupActive)
 
 void TextManager::clear()
 {
-	for (auto& message : m_messagesMap) {
-
-		delete message.second;
-	}
-
 	m_messagesMap.clear();
 }
 
 void TextManager::startGame()
 {
-	TextMessage* score = new TextMessage("Score: 0", sf::Vector2f(10.f, 10.f), 30, MessageType::score);
+	std::shared_ptr<TextMessage> score = std::make_shared<TextMessage>("Score: 0", sf::Vector2f(10.f, 10.f), 30, MessageType::score);
 
-	m_messagesMap.insert(std::pair<MessageType, TextMessage*>(score->getType(), score));
+	m_messagesMap.insert(std::pair<MessageType, std::shared_ptr<TextMessage>>(score->getType(), score));
 }
 
 std::string TextManager::getPowerupType(const PowerupType& powerup)

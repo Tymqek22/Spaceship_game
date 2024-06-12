@@ -6,7 +6,6 @@ void AsteroidManager::manageLifetime(std::vector<std::shared_ptr<Asteroid>>& ast
 	asteroids.erase(std::remove_if(asteroids.begin(), asteroids.end(), [](std::shared_ptr<Asteroid> asteroid)
 		{
 			if (!asteroid->getAliveStatus()) {
-				//delete asteroid;
 				return true;
 			}
 			else
